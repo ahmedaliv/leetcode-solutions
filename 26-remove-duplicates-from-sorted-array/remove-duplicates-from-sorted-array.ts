@@ -1,10 +1,14 @@
 function removeDuplicates(nums: number[]): number {
-    let i = 0;
-    for (let j = 1; j < nums.length; j++) {
-        if (nums[i] !== nums[j]) {
-            i++;
-            nums[i] = nums[j];
+    let map = new Map();
+    let k = 0;
+
+    for (let i = 0; i < nums.length; i++) {
+        if (!map.has(nums[i])) {
+            map.set(nums[i], true);
+            nums[k] = nums[i];
+            k++;
         }
     }
-    return i + 1;
+    
+    return k;
 }
