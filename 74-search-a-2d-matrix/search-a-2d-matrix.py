@@ -11,10 +11,11 @@ class Solution:
             #convert to a 2d index 
             row = mid // n
             col = mid % n 
-
-            if matrix[row][col] == target:
+            mid_value = matrix[row][col]
+            
+            if mid_value == target:
                 return True
-            elif matrix[row][col] > target:
+            elif mid_value > target:
                 r = mid - 1 
             else:
                 l = mid + 1
