@@ -1,17 +1,30 @@
-class Solution(object):
-    def wordBreak(self, s, wordDict):
-        """
-        :type s: str
-        :type wordDict: List[str]
-        :rtype: bool
-        """
-        n = len(s) 
-        dp = [False for i in range(n + 1)] 
-        dp[0] = True
-        for i in range(1, n + 1): 
-            for j in range(i): 
-                if dp[j] and s[j:i] in wordDict: 
-                    dp[i] = True
-                    break
-        return dp[n]
+class Solution:
+    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+        dp = [None] * len(s)
+        def wb(pos):
+            if(pos==len(s)):
+                return True
+            if(dp[pos] is not None):
+                return dp[pos]
+            
+            for i in range(pos,len(s)):
+                if(s[pos:i+1] in wordDict and wb(i+1)):
+                    dp[pos] = True
+                    return True
+            dp[pos]= False
+            return False
+        wb(0)
+        return dp[0]
         
+        # Recursive (no memoization) -> gives TLE
+        # def wb(pos):
+        #     if (pos == len(s)):
+        #         return True
+            
+            
+        #     for i in range(pos,len(s)):
+        #         if(s[pos:i+1] in wordDict  and wb(i+1)):
+        #             return True
+        #     return False
+        # return wb(0)
+            
