@@ -1,5 +1,7 @@
 class Solution:
     def integerBreak(self, n: int) -> int:
+        #special cases instead of handling it in the dp approach itself (becase of the constrain that it should be divided to <= 2 parts)
+        # Complexity T-> O(N^2), M -> O(N)
         if n==2 or n==3:
             return n-1
         dp = [-1]* (n +1)
