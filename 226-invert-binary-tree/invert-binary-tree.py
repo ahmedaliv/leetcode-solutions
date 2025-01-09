@@ -7,23 +7,23 @@
 from collections import deque
 class Solution:
     def invertTree(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
-        # if not root:
-        #     return None
-        # queue = deque([root])
+        if not root:
+            return None
+        queue = deque([root])
 
-        # while queue:
-        #     node = queue.popleft()
-        #     node.left,node.right = node.right,node.left
-        #     if node.left:
-        #         queue.append(node.left)
-        #     if node.right:
-        #         queue.append(node.right)
-        # return root
-        def dfs(node):
-            if not node:
-                return None
-            node.left,node.right= node.right,node.left
-            dfs(node.left)
-            dfs(node.right)
-        dfs(root)
+        while queue:
+            node = queue.popleft()
+            node.left,node.right = node.right,node.left
+            if node.left:
+                queue.append(node.left)
+            if node.right:
+                queue.append(node.right)
         return root
+        # def dfs(node):
+        #     if not node:
+        #         return None
+        #     node.left,node.right= node.right,node.left
+        #     dfs(node.left)
+        #     dfs(node.right)
+        # dfs(root)
+        # return root
