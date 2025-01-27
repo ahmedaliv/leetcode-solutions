@@ -1,16 +1,20 @@
 class Solution:
-    def findMaxLength(self, nums: List[int]) -> int:
-        res = 0 
-        hash_map = {0:-1} # to handle subarrays starting from the start
-        sum = 0
+    def findMaxLength(self, nums):
+        best = 0
+        h_t = {}
+        p_s = 0
 
-        for i,num in enumerate(nums):
-            if num ==1:
-                sum +=1
+        for i in range(len(nums)):
+            if nums[i]:
+                p_s+=1
             else:
-                sum -=1
-            if sum in hash_map:
-                res= max(res,i-hash_map[sum])
+                p_s-=1
+            
+            if p_s == 0:
+                best = max(best,i+1)
+            elif p_s in h_t:
+                best = max(best,i-h_t[p_s])
             else:
-                hash_map[sum]=i
-        return res
+                h_t[p_s] = i
+        return best
+                
