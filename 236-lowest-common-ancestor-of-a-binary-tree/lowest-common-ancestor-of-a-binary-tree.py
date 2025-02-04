@@ -8,7 +8,6 @@ from collections import deque
 class Solution:
     def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
         
-        dq = deque()
         h_t = {}
         h_t[root]=None
         def build_parent(root):
