@@ -6,27 +6,30 @@
 #         self.right = None
 from collections import deque
 class Solution:
-    def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
-        
-        h_t = {}
-        h_t[root]=None
-        def build_parent(root):
-            if not root:
-                return
-            if root.left:
-                h_t[root.left]=root
-                build_parent(root.left)
-            if root.right:
-                h_t[root.right]=root
-                build_parent(root.right)
-        build_parent(root)
-        p_ancestors = set()
+
+    def lowestCommonAncestor(self,root, p, q):
+        if not root:
+            return None
+
+        parent_map = {root: None}
+        queue = deque([root])
+
+        while p not in parent_map or q not in parent_map:
+            node = queue.popleft()
+
+            if node.left:
+                parent_map[node.left] = node
+                queue.append(node.left)
+            if node.right:
+                parent_map[node.right] = node
+                queue.append(node.right)
+
+        ancestors = set()
         while p:
-            p_ancestors.add(p)
-            p = h_t[p]
-        while q:
-            if q in p_ancestors:
-                break
-            q = h_t[q]
+            ancestors.add(p)
+            p = parent_map[p]
+
+        while q not in ancestors:
+            q = parent_map[q]
+
         return q
-            
