@@ -8,28 +8,19 @@ from collections import deque
 class Solution:
 
     def lowestCommonAncestor(self,root, p, q):
+
+
         if not root:
             return None
 
-        parent_map = {root: None}
-        queue = deque([root])
-
-        while p not in parent_map or q not in parent_map:
-            node = queue.popleft()
-
-            if node.left:
-                parent_map[node.left] = node
-                queue.append(node.left)
-            if node.right:
-                parent_map[node.right] = node
-                queue.append(node.right)
-
-        ancestors = set()
-        while p:
-            ancestors.add(p)
-            p = parent_map[p]
-
-        while q not in ancestors:
-            q = parent_map[q]
-
-        return q
+        left = self.lowestCommonAncestor(root.left,p,q)
+        right = self.lowestCommonAncestor(root.right,p,q)
+        # diff. subtrees
+        if left and right:
+            return root
+        #one of them is the root
+        if p == root or q==root:
+            return root
+        # both in one subtree so we return it 
+        # keep in mind that this propgates to the top, so you would have the LCA
+        return left or right
