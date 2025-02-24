@@ -2,13 +2,15 @@ class Solution:
     def asteroidCollision(self, asteroids: List[int]) -> List[int]:
         s = []
         for e in asteroids:
-            if e > 0:
+            while s and s[-1] > 0 and e <0:
+                is_col = e + s[-1]
+                if is_col > 0 :
+                    e = 0
+                elif is_col < 0:
+                    s.pop()
+                else:
+                    s.pop()
+                    e=0
+            if e:
                 s.append(e)
-            else:
-                while s and s[-1] > 0 and abs(e) > s[-1]:
-                    s.pop()
-                if not s or s[-1] < 0:
-                    s.append(e)
-                elif s and s[-1] == abs(e):
-                    s.pop()
         return s
