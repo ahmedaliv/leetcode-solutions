@@ -3,9 +3,5 @@ class Solution:
         groups = defaultdict(list)
 
         for word in strs:
-            freq = [0]* 26
-            for c in word:
-                freq[ord(c)-ord('a')] += 1
-            
-            groups[tuple(freq)].append(word)
+            groups[str(sorted(word))].append(word)
         return list(groups.values())
