@@ -1,5 +1,4 @@
-SELECT DISTINCT L1.NUM AS ConsecutiveNums
-FROM LOGS L1
-JOIN LOGS L2 ON L1.ID + 1 = L2.ID
-JOIN LOGS L3 ON L2.ID + 1 = L3.ID
-WHERE L1.NUM = L2.NUM AND L2.NUM = L3.NUM;
+SELECT DISTINCT num AS ConsecutiveNums
+FROM Logs l1
+WHERE num = (SELECT num FROM Logs WHERE id = l1.id + 1)
+AND num = (SELECT num FROM Logs WHERE id = l1.id + 2);
