@@ -8,23 +8,24 @@ class Solution:
         dummy = ListNode(0)
         dummy.next = head
         prev_group_end = dummy
-
+        
         while True:
-            kth_node = prev_group_end
+            stack = []
+            temp = prev_group_end.next
+            
+            # Push k nodes onto the stack
             for _ in range(k):
-                kth_node = kth_node.next
-                if not kth_node:
+                if not temp:
                     return dummy.next
-
-            prev = None
-            cur = prev_group_end.next
-            start_node = cur
-            for _  in range(k):
-                temp = cur.next
-                cur.next = prev
-                prev = cur
-                cur = temp
-            start_node.next = cur
-            prev_group_end.next = prev
-            prev_group_end = start_node
+                stack.append(temp)
+                temp = temp.next
+            
+            # Pop nodes from stack to reverse them
+            while stack:
+                prev_group_end.next = stack.pop()
+                prev_group_end = prev_group_end.next
+            
+            # Connect to the next part of the list
+            prev_group_end.next = temp
+        
         return dummy.next
