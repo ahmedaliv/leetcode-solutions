@@ -4,24 +4,32 @@
 #         self.val = val
 #         self.left = left
 #         self.right = right
-from collections import deque, defaultdict
-import heapq
+from collections import deque
+from sortedcontainers import SortedDict
+
 class Solution:
 
     def verticalTraversal(self,root):
         if not root:
             return []
-        
-        q = deque([(root, 0, 0)])  
-        h_m = defaultdict(list)    
-        
-        while q:
-            node, row, col = q.popleft()
-            heapq.heappush(h_m[col], (row, node.val))  
+
+        node_map = SortedDict()
+        queue = deque([(root, 0, 0)])
+
+        while queue:
+            node, row, col = queue.popleft()
+
+            if col not in node_map:
+                node_map[col] = []
+            node_map[col].append((row, node.val))
             
             if node.left:
-                q.append((node.left, row + 1, col - 1))
+                queue.append((node.left, row + 1, col - 1))
             if node.right:
-                q.append((node.right, row + 1, col + 1))
+                queue.append((node.right, row + 1, col + 1))
         
-        return [[val for _, val in sorted(h_m[col])] for col in sorted(h_m.keys())]
+        result = []
+        for col in node_map:
+            result.append([val for row, val in sorted(node_map[col])])
+
+        return result
