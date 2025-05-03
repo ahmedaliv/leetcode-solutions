@@ -12,19 +12,25 @@ class Solution:
 
         q = deque([root])
         output = []
-        level = 0
+        left_to_right = True
+
         while q:
-            sz = len(q)
-            current_level_nodes = []
-            for _ in range(sz):
+            level_size = len(q)
+            level_nodes = deque()
+
+            for _ in range(level_size):
                 node = q.popleft()
-                current_level_nodes.append(node.val)
+                if left_to_right:
+                    level_nodes.append(node.val)
+                else:
+                    level_nodes.appendleft(node.val)
+
                 if node.left:
                     q.append(node.left)
                 if node.right:
                     q.append(node.right)
-            if level % 2 == 1:
-                current_level_nodes.reverse()
-            output.append(current_level_nodes)
-            level +=1
+
+            output.append(list(level_nodes))
+            left_to_right = not left_to_right
+
         return output
