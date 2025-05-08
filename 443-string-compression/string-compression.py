@@ -1,22 +1,24 @@
 class Solution:
+    
     def compress(self, chars) -> int:
-        cnt = 1
-        newLen = 0 
-        st_idx = 0 
-        for i in range(len(chars)):
-            if  i < len(chars) - 1 and chars[i]==chars[i+1]: 
-                cnt+=1
-            else:
-                chars[st_idx] = chars[i]
-                st_idx +=1
-                
-                if cnt == 1:
-                    newLen +=1
-                else:
-                    newLen += len(str(cnt)) + 1
-                    digits = list(map(int, str(cnt)))
-                    for digit in digits:
-                        chars[st_idx] = str(digit)
-                        st_idx+=1
-                cnt = 1
-        return newLen
+        def extract_digits(count:int):
+            str_int = str(count)
+            output = []
+            for i in range(len(str_int)):
+                output.append(str_int[i])
+            return output
+        read = 0
+        write = 0
+        while read < len(chars):
+            c = chars[read]
+            count = 0
+            while read <len(chars) and c == chars[read]:
+                read +=1
+                count +=1
+            chars[write] = c
+            write +=1
+            if count>1:
+                for d in extract_digits(count):
+                    chars[write] = d
+                    write +=1
+        return write
