@@ -10,25 +10,14 @@ class Node:
 
 class Solution:
     def connect(self, root: 'Optional[Node]') -> 'Optional[Node]':
-        if not root:
-            return None
+        cur, nxt = root,root.left if root else None
 
-        from collections import deque
-        q = deque()
-        q.append(root)
-
-        while q:
-            level_size = len(q)
-            # important to reset for each level
-            prevNode = None
-
-            for _ in range(level_size):
-                node = q.pop()
-                node.next = prevNode
-                prevNode = node
-
-                if node.right:
-                    q.appendleft(node.right)
-                if node.left:
-                    q.appendleft(node.left)
+        while cur and nxt:
+            cur.left.next = cur.right
+            if cur.next:
+                cur.right.next = cur.next.left
+            cur = cur.next
+            if not cur:
+                cur = nxt
+                nxt = cur.left
         return root
