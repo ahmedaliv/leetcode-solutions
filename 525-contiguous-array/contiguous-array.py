@@ -1,20 +1,16 @@
 class Solution:
-    def findMaxLength(self, nums):
-        best = 0
-        h_t = {}
-        p_s = 0
-
+    def findMaxLength(self, nums: List[int]) -> int:
+        prefix_table = defaultdict(int)
+        # we store first occurence 
+        prefix_table[0] = -1 
+        prefix_sum = res =0
         for i in range(len(nums)):
-            if nums[i]:
-                p_s+=1
+            # convert to zeroes to -1 (to know where sum 0  happen ( to be able to use prefix sum))
+            prefix_sum += nums[i] if nums[i] else -1
+            # keep earliest index
+            if prefix_sum not in prefix_table:
+                prefix_table[prefix_sum] = i 
             else:
-                p_s-=1
-            
-            if p_s == 0:
-                best = max(best,i+1)
-            elif p_s in h_t:
-                best = max(best,i-h_t[p_s])
-            else:
-                h_t[p_s] = i
-        return best
-                
+            # Whenever we see a prefix_sum again, the subarray between first occurrence and current index has equal number of 0s and 1s
+                res = max(res,i- prefix_table[prefix_sum])
+        return res
