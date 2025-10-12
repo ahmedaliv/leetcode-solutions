@@ -1,25 +1,19 @@
 class Solution:
     def maxSubarraySumCircular(self, nums: List[int]) -> int:
-        arr_sum = sum(nums)
-        best_max = self.maxSubArr(nums)
-        best_min = float('inf')
-        cur_sum = 0
-        for num in nums:
-            cur_sum += num
-            best_min = min (best_min,cur_sum)
-            if cur_sum > 0:
-                cur_sum = 0
-        
-        if best_min == arr_sum:
-            return best_max
-        else:
-            return max(best_max,arr_sum - best_min)
-    def maxSubArr(self,nums):
         best_max = float('-inf')
         cur_sum = 0
-        for num in nums:
-            cur_sum += num
+        for i in range(len(nums)):
+            cur_sum = max(nums[i],cur_sum+nums[i])  
             best_max = max(best_max,cur_sum)
-            if cur_sum < 0:
-                cur_sum = 0
-        return best_max
+        best_min = float('inf')
+        cur_sum = 0
+        for i in range(len(nums)):
+            cur_sum = min(nums[i],cur_sum+nums[i])  
+            best_min = min(best_min,cur_sum)
+        ss = sum(nums)
+        # special case if all elements are negative, just return the maximum element
+        if ss == best_min:
+            return best_max
+        # normal: return the max between normal maximum subarray and whole array excluding the minmum array
+        
+        return max(best_max,ss-best_min)
