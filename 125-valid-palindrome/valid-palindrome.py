@@ -1,11 +1,14 @@
 class Solution:
     def isPalindrome(self, s: str) -> bool:
-        normalized = ''.join(c.lower() for c in s if c.isalnum())
-        l,r=0,len(normalized)-1
-        while l<r:
-            if normalized[l]==normalized[r]:
-                r-=1
-                l+=1
-            else:
+        l, r = 0, len(s) - 1
+        while l < r:
+            # Skip non-alphanumeric characters
+            while l < r and not s[l].isalnum():
+                l += 1
+            while l < r and not s[r].isalnum():
+                r -= 1
+            if s[l].lower() != s[r].lower():
                 return False
+            l += 1
+            r -= 1
         return True
