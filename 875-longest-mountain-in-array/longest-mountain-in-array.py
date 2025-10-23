@@ -1,20 +1,12 @@
 class Solution:
     def longestMountain(self, arr: List[int]) -> int:
-        best = 0 
-        asec,desc = 0,0
-        if len(arr) < 3:
-            return 0
-        for end in range(1,len(arr)):
-            # when invalid reset (2 cases 1- we already had a mountain going down and now we reached an end 2- two consecutive equal values)
-            if(desc > 0 and arr[end]>arr[end-1]) or arr[end]==arr[end-1]:
-                asec,desc =0 ,0
+        ups = downs = longest = 0
+        for i in range(1,len(arr)):
+            if (downs and arr[i-1]<arr[i]) or (arr[i]==arr[i-1]):
+                downs = ups = 0 
             
-            if arr[end]>arr[end-1]:
-                asec +=1
-            elif arr[end]<arr[end-1]:
-                desc += 1
-            
-            if asec > 0 and desc > 0:
-                best = max(best, asec + desc + 1)
-
-        return best
+            ups += arr[i] > arr[i-1]
+            downs += arr[i]<arr[i-1]
+            if ups and downs:
+                longest = max(longest,ups+downs+1)
+        return longest
