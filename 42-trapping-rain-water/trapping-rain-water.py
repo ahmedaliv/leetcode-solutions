@@ -32,17 +32,20 @@ class Solution:
         n = len(height)
         if n < 3:
             return 0 
-        left_max = right_max = 0
-        left = 0
-        right = len(height)-1
-        ans = 0
-        while left<=right:
-            if left_max<max(height[right],right_max):
-                left_max = max(left_max,height[left])
-                ans += left_max - height[left]
-                left +=1
+
+        result, left, right = 0, 1, n-2
+        left_max = height[0]
+        right_max = height[n-1]
+
+        while left <= right:
+            if left_max <= right_max:
+                left_max = max(left_max, height[left])
+                result += left_max - height[left]
+                left += 1
             else:
-                right_max = max(right_max,height[right])
-                ans += right_max - height[right]
-                right-=1
-        return ans
+                right_max = max(right_max, height[right])
+                result += right_max - height[right]
+                right -= 1
+
+        return result
+
