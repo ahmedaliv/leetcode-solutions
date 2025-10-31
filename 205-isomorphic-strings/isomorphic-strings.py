@@ -1,21 +1,12 @@
 class Solution:
     def isIsomorphic(self, s: str, t: str) -> bool:
-        mp1 = collections.defaultdict(int)
-        mp2= collections.defaultdict(int)
-        n = len(s)
-        m = len(t)
-        if n!=m:
-            return False
-            
-        for i in range(n):
-            ch1 = s[i]
-            ch2 = t[i]
-            # iso. in both directions
-            # example that makes this necessary s = 'abc' t ='xxx'
-            if mp1[ch1] and  mp1[ch1]!=ch2:
-                return False
-            if mp2[ch2] and  mp2[ch2]!=ch1:
-                return False
-            mp1[ch1]=ch2
-            mp2[ch2]=ch1
-        return True
+        return self.canonical(s) == self.canonical(t)
+
+    def canonical(self,s):
+        index_mapping = {}
+        can_str = []
+        for i,c in enumerate(s):
+            if c not in index_mapping:
+                index_mapping[c] = i
+            can_str.append(str(index_mapping[c]))
+        return ' '.join(can_str)
