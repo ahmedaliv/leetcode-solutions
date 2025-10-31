@@ -1,10 +1,19 @@
 class Solution:
     def isIsomorphic(self, s: str, t: str) -> bool:
-        hs_t = {}
-        ht_s = {}
-        for i in range(len(s)):
-            if (s[i] in hs_t and hs_t[s[i]] != t[i]) or (t[i] in ht_s and ht_s[t[i]] != s[i]):
+        mp1 = collections.defaultdict(int)
+        mp2= collections.defaultdict(int)
+        n = len(s)
+        m = len(t)
+        if n!=m:
+            return False
+            
+        for i in range(n):
+            ch1 = s[i]
+            ch2 = t[i]
+            if mp1[ch1] and  mp1[ch1]!=ch2:
                 return False
-            hs_t[s[i]] = t[i]
-            ht_s[t[i]] = s[i]
+            if mp2[ch2] and  mp2[ch2]!=ch1:
+                return False
+            mp1[ch1]=ch2
+            mp2[ch2]=ch1
         return True
