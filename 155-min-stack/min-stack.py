@@ -1,5 +1,7 @@
 class MinStack:
-
+    # the idea here is to use the prefix min approach(for each element compute the current min for it)
+    # but this is making it O(N) memory
+    # can we improve that ?    
     def __init__(self):
         self.data = []
         self.mn_stk = []
