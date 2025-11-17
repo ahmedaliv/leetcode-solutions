@@ -1,47 +1,33 @@
 class Solution:
     def longestValidParentheses(self, s: str) -> int:
-        # We keep a stack of integers.
-        # Each entry represents the length of a "segment" (a valid parentheses substring)
-        # that is waiting to be attached to its parent segment.
+        # This solution uses a stack of indices.
+        # The stack always stores the *boundary* of the last unmatched position.
         #
-        # Example:
-        # For "(())", we build inner segments first (2), then attach to the outer segment.
-        
-        stk = [0]   # Root segment (represents no substring before we start)
+        # stk = [-1] means:
+        #   "Before the string starts, the last invalid position is at index -1"
+        #
+        # Whenever we find a valid pair, we measure the length from the current index
+        # back to the last unmatched boundary.
+
         best = 0
-        opened = 0  # Tracks the number of unmatched "(" we have seen
-        
+        stk = [-1]   # Initial boundary before the string starts
+
         for i, c in enumerate(s):
             if c == '(':
-                opened += 1
-                
-                # Start a new child segment.
-                # Push a 0-length segment placeholder to accumulate future matches.
-                stk.append(0)
-            
-            else:  # c == ')'
-                if opened:
-                    # We have a matching "(" available.
-                    # Complete the child segment: add 2 characters for the matching pair.
-                    child_len = stk[-1] + 2
-                    stk.pop()  # Remove the child segment
-                    
-                    # Attach this completed child segment to its parent.
-                    parent_len = stk[-1] + child_len
-                    stk.pop()
-                    
-                    # Push the updated parent segment back.
-                    stk.append(parent_len)
-                    
-                    opened -= 1
-                    
-                    # Track maximum valid substring length seen so far.
-                    best = max(best, parent_len)
-                
+                # Push index of '(' so that if it matches later,
+                # we know the start position of this open parenthesis
+                stk.append(i)
+            else:
+                # We found ')', remove one '(' index (attempt match)
+                stk.pop()
+
+                if not stk:
+                    # No available '(' to match with → this ')' is invalid
+                    # Set a new boundary at this index
+                    stk.append(i)
                 else:
-                    # Unmatched ')', so we reset segment.
-                    # Start a new independent segment of length 0.
-                    stk.append(0)
-                    opened = 0
-        
+                    # Valid pair found → compute the valid substring length.
+                    # s[ stk[-1] + 1 : i ] is a valid range.
+                    best = max(best, i - stk[-1])
+
         return best
