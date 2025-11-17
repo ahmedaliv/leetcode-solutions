@@ -1,33 +1,32 @@
 class Solution:
     def longestValidParentheses(self, s: str) -> int:
-        # This solution uses a stack of indices.
-        # The stack always stores the *boundary* of the last unmatched position.
+        # Short solution using the "parent index" idea.
         #
-        # stk = [-1] means:
-        #   "Before the string starts, the last invalid position is at index -1"
+        # We push the index of every '(' onto the stack.
+        # Each index represents the start of a new valid parent expression.
         #
-        # Whenever we find a valid pair, we measure the length from the current index
-        # back to the last unmatched boundary.
-
+        # Initialize the stack with -1, acting as the parent for the whole string.
+        # This helps compute lengths when the valid substring starts at index 0.
         best = 0
-        stk = [-1]   # Initial boundary before the string starts
+        stk = [-1]
 
         for i, c in enumerate(s):
             if c == '(':
-                # Push index of '(' so that if it matches later,
-                # we know the start position of this open parenthesis
+                # New opened sub-expression → push its index.
                 stk.append(i)
             else:
-                # We found ')', remove one '(' index (attempt match)
+                # ')' → close a sub-expression.
+                # Pop the direct matching '(' index (or attempt to).
                 stk.pop()
 
                 if not stk:
-                    # No available '(' to match with → this ')' is invalid
-                    # Set a new boundary at this index
+                    # No parent exists → invalid ')'.
+                    # Start a new parent boundary from this index.
                     stk.append(i)
                 else:
-                    # Valid pair found → compute the valid substring length.
-                    # s[ stk[-1] + 1 : i ] is a valid range.
+                    # Valid match with a parent expression.
+                    # Compute the length of the current valid substring:
+                    # current_position - parent_start_index
                     best = max(best, i - stk[-1])
 
         return best
