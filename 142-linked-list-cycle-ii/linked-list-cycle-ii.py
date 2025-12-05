@@ -6,12 +6,12 @@
 
 class Solution:
     def detectCycle(self, head: Optional[ListNode]) -> Optional[ListNode]:
-        h_t = {}
+        h_s = set()
         cur = head
         while cur:
-            if cur in h_t:
+            if cur in h_s:
                 return cur
-            h_t [cur] = True
+            h_s.add(cur)
             cur = cur.next
         return None
 
