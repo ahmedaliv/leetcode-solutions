@@ -11,17 +11,32 @@ class Solution:
     def copyRandomList(self, head: 'Optional[Node]') -> 'Optional[Node]':
         if not head:
             return None
-        node_map = {}
+        cur = head
+        # create intermediate Nodes A,A',B,B'
+        # and link the next pointer 
+        while cur:
+            orig_next = cur.next
+            cur.next = Node(cur.val)
+            cur.next.next = orig_next
+            cur = cur.next.next
+        
+        new_head = head.next
+        
+        # assign random pointers 
         cur = head
         while cur:
-            node_map[cur] = Node(cur.val)
-            cur = cur.next
-        # assign next and random
-        cur = head
-        while cur:
-            if cur.next:
-                node_map[cur].next = node_map[cur.next]
+            # connect the dash nodes to the dash randoms
             if cur.random:
-                node_map[cur].random = node_map[cur.random]
+                cur.next.random = cur.random.next
+            cur = cur.next.next
+        # split the two lists
+        cur = head
+        while cur:
+            # dash node
+            cp = cur.next
+            #connect the original list again
+            cur.next = cur.next.next
+            if cp.next:
+                cp.next = cp.next.next
             cur = cur.next
-        return node_map[head]
+        return new_head
