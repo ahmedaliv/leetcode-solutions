@@ -7,21 +7,12 @@
 class Solution:
         
     def isSubtree(self, root: Optional[TreeNode], subRoot: Optional[TreeNode]) -> bool:
-        SEEN = set()
-        def dfs(root):
+        def parenthesize(root):
             if not root:
-                return '#'
-
-            left = dfs(root.left)
-            right = dfs(root.right)
-
-            h = f"{root.val},{left},{right}"
-            SEEN.add(h)
-            return h
-        def dfs_sub(root):
-            if not root:
-                return '#'
-            return f"{root.val},{dfs_sub(root.left)},{dfs_sub(root.right)}"
-            
-        dfs(root)
-        return dfs_sub(subRoot) in SEEN
+                return '()'
+            left = parenthesize(root.left)
+            right = parenthesize(root.right)
+            return f"({root.val}{left}{right}"
+        parenthesized_root = parenthesize(root)
+        parenthesized_subRoot = parenthesize(subRoot)
+        return parenthesized_subRoot in parenthesized_root
