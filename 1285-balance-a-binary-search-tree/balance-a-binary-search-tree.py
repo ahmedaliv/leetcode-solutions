@@ -1,24 +1,25 @@
-
-
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
 class Solution:
-    def balanceBST(self, root: TreeNode) -> TreeNode:
-        def inorderTraversal(node):
-            if not node:
-                return []
-            return inorderTraversal(node.left) + [node.val] + inorderTraversal(node.right)
-        
-        sorted_values = inorderTraversal(root)
-        
-        def buildBalancedBST(values):
-            if not values:
+    def balanceBST(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+        arr = []
+        def in_order(root):
+            if not root:
+                return
+            in_order(root.left)
+            arr.append(root.val)
+            in_order(root.right)
+        in_order(root)
+        def balance_tree(arr):
+            if not arr:
                 return None
-            mid = len(values) // 2
-            root = TreeNode(values[mid])
-            
-            root.left = buildBalancedBST(values[:mid])
-            
-            root.right = buildBalancedBST(values[mid+1:])
-            
+            mid = len(arr) // 2
+            root = TreeNode(arr[mid])
+            root.left = balance_tree(arr[:mid])
+            root.right = balance_tree(arr[mid+1:])
             return root
-        
-        return buildBalancedBST(sorted_values)
+        return balance_tree(arr)
