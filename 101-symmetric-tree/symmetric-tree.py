@@ -6,21 +6,11 @@
 #         self.right = right
 class Solution:
     def isSymmetric(self, root: Optional[TreeNode]) -> bool:
-        if not root:
-            return True
-        def parenthesize_l_r(root):
-            if not root:
-                return '()'
-            left = parenthesize_l_r(root.left)
-            right = parenthesize_l_r(root.right)
-            return f'{root.val}{left}{right}'
-
-        def parenthesize_r_l(root):
-            if not root:
-                return '()'
-            right = parenthesize_r_l(root.right)
-            left = parenthesize_r_l(root.left)
-            return f'{root.val}{right}{left}'
-        left_sub = parenthesize_l_r(root.left)
-        right_sub = parenthesize_r_l(root.right)
-        return left_sub == right_sub
+        def is_mirror(t1,t2):
+            if not t1 and not t2:
+                return True
+            if not t1 or not t2:
+                return False
+            
+            return (t1.val==t2.val) and is_mirror(t1.left,t2.right) and is_mirror(t1.right,t2.left)
+        return is_mirror(root.left,root.right)
