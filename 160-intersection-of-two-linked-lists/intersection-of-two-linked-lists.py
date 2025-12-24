@@ -5,30 +5,15 @@
 #         self.next = None
 
 class Solution:
-    def getIntersectionNode(self,headA: ListNode, headB: ListNode) -> ListNode:
-        if not headA or not headB:
-            return None
-        
-        # we created a cycle
-        tail = headA
-        while tail.next:
-            tail = tail.next
-        tail.next = headA 
-
-        # now go from headb to get the intersection ( apply fast,slow algorithm tortoise and hare )
-    
-        fast,slow = headB,headB
-        while fast and fast.next:
-            fast = fast.next.next
-            slow = slow.next
-            if slow==fast:
-                break
-        else:
-            tail.next = None
-            return None
-        slow = headB
-        while fast != slow:
-            fast = fast.next
-            slow = slow.next
-        tail.next = None
-        return slow
+    def getIntersectionNode(self, headA: ListNode, headB: ListNode) -> Optional[ListNode]:
+        h_t = {}
+        p1 = headA
+        while p1:
+            h_t[p1] = True
+            p1 = p1.next
+        p2 = headB
+        while p2:
+            if p2 in h_t:
+                return p2
+            p2 = p2.next
+        return None
