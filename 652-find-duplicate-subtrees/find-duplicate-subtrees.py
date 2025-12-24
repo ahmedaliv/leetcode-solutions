@@ -11,8 +11,8 @@ class Solution:
         ans = []
         def dfs(node):
             if not node:
-                return '()'
-            serial = f'{node.val},{dfs(node.left)},{dfs(node.right)}'
+                return None
+            serial = (node.val, dfs(node.left), dfs(node.right))
             count[serial] += 1
             if count[serial] == 2:
                 ans.append(node)
