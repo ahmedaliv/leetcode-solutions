@@ -6,14 +6,30 @@
 
 class Solution:
     def getIntersectionNode(self, headA: ListNode, headB: ListNode) -> Optional[ListNode]:
-        h_t = {}
-        p1 = headA
-        while p1:
-            h_t[p1] = True
-            p1 = p1.next
-        p2 = headB
-        while p2:
-            if p2 in h_t:
-                return p2
-            p2 = p2.next
-        return None
+        def get_intersection(head):
+            if not head:
+                return None
+            fast,slow = head,head
+            while fast and fast.next:
+                slow = slow.next
+                fast = fast.next.next
+                if fast==slow:
+                    return fast
+            return None
+        # create cycle explicitly to make use of two pointer approach
+        tailA = headA
+        while tailA.next:
+            tailA = tailA.next
+        tailA.next = headA
+        int_point = get_intersection(headB)
+        if not int_point:
+            tailA.next = None
+            return None
+        # now using math. if we started at head and int_point and moved one by one, we will meet at cycle beginning 
+        dummy = headB
+        while int_point!=dummy:
+            dummy = dummy.next
+            int_point = int_point.next
+        tailA.next = None
+        return int_point 
+
