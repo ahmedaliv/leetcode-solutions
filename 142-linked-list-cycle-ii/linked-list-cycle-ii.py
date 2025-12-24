@@ -6,22 +6,21 @@
 
 class Solution:
     def detectCycle(self, head: Optional[ListNode]) -> Optional[ListNode]:
-        def get_intersection(node):
-            if not node:
+        def get_intersection(head):
+            if not head:
                 return None
-
-            fast = slow = node
+            slow = fast = head
             while fast and fast.next:
-                fast = fast.next.next
                 slow = slow.next
+                fast = fast.next.next
                 if slow == fast:
-                    return fast
+                    return slow
             return None
-
-        int_point = get_intersection(head)
-        if not int_point:
+        intersection_node = get_intersection(head)
+        if not intersection_node:
             return None
-        while head != int_point:
-            head = head.next
-            int_point = int_point.next
-        return int_point
+        dummy = head
+        while intersection_node != dummy:
+            intersection_node = intersection_node.next
+            dummy = dummy.next
+        return dummy
