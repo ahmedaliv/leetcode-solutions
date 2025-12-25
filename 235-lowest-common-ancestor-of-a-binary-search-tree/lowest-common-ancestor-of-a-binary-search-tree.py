@@ -7,12 +7,15 @@
 
 class Solution:
     def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
-        if not root or root == p or root == q:
-            return root
 
-        if p.val > root.val and q.val > root.val:
-            return self.lowestCommonAncestor(root.right,p,q)
-        elif p.val < root.val and q.val < root.val:
-            return self.lowestCommonAncestor(root.left,p,q)
-        else:
-            return root
+        p_val = p.val
+        q_val = q.val
+        cur = root
+        while cur:
+            cur_val = cur.val
+            if p_val > cur_val and q_val > cur_val:
+                cur = cur.right
+            elif p_val < cur_val  and q_val < cur_val:
+                cur = cur.left
+            else:
+                return cur
