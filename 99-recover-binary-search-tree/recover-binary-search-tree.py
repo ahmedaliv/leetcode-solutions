@@ -9,27 +9,29 @@ class Solution:
         """
         Do not return anything, modify root in-place instead.
         """
-        arr = []
+        predecessor = None
+        mn = mx = None
+        def select(pre,cur):
+            nonlocal mn, mx
+
+            if not mn:
+                mn = cur
+                mx = pre
+            else:
+                mn = cur
+
 
         def in_order(node):
+            nonlocal predecessor
+
             if not node:
                 return
             in_order(node.left)
-            arr.append(node)
+            if predecessor and node.val < predecessor.val:
+                select(predecessor,node)
+            predecessor = node
             in_order(node.right)
 
+
         in_order(root)
-
-        first = None
-        second = None
-
-        for i in range(1, len(arr)):
-            if arr[i].val < arr[i - 1].val:
-                if not first:
-                    first = arr[i - 1]
-                    second = arr[i]
-                else:
-                    second = arr[i]
-                    break
-
-        first.val, second.val = second.val, first.val
+        mn.val, mx.val = mx.val, mn.val
