@@ -9,22 +9,27 @@ class Solution:
         """
         Do not return anything, modify root in-place instead.
         """
-        stack = []
-        x = y = pred = None
-        
-        while stack or root:
-            while root:
-                stack.append(root)
-                root = root.left
-            root = stack.pop()
-            if pred and root.val < pred.val:
-                y = root
-                if x is None:
-                    x = pred 
+        arr = []
+
+        def in_order(node):
+            if not node:
+                return
+            in_order(node.left)
+            arr.append(node)
+            in_order(node.right)
+
+        in_order(root)
+
+        first = None
+        second = None
+
+        for i in range(1, len(arr)):
+            if arr[i].val < arr[i - 1].val:
+                if not first:
+                    first = arr[i - 1]
+                    second = arr[i]
                 else:
+                    second = arr[i]
                     break
-            pred = root
-            root = root.right
 
-        x.val, y.val = y.val, x.val
-
+        first.val, second.val = second.val, first.val
